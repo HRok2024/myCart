@@ -1,5 +1,6 @@
 import React from "react";
 import "./FeaturedProducts.css";
+import ProductCard from "../Products/ProductCard";
 
 const FeaturedProducts = () => {
   return (
@@ -7,7 +8,9 @@ const FeaturedProducts = () => {
       <h2>주요제품</h2>
 
       <div className="align_center featured_products_list">
-        <article className="product_card">상품</article>
+        <ProductCard />
+        <ProductCard />
+        <ProductCard />
       </div>
     </section>
   );
