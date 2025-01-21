@@ -1,22 +1,29 @@
 import React, { useRef, useState } from "react";
 import "./LoginPage.css";
+import { useForm } from "react-hook-form";
 
 const LoginPage = () => {
   // const passwordRef = useRef(null);
-  const [user, setUser] = useState({
-    email: "",
-    password: "",
-  });
+  // const [user, setUser] = useState({
+  //   email: "",
+  //   password: "",
+  // });
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+  //   console.log(user);
+  //   setUser({ email: "", password: "" });
+  // };
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log(user);
-    setUser({ email: "", password: "" });
-  };
+  const submitData = (data) => console.log(data);
   return (
     <section className="align_center form_page">
       {/* 버튼 태그가 아니라 form에 onSubmit을 해줘야한다 */}
-      <form onSubmit={handleSubmit} className="authentication_form">
+      <form onSubmit={handleSubmit(submitData)} className="authentication_form">
         <h2>로그인 폼</h2>
         <div className="form_inputs">
           <div>
@@ -26,8 +33,9 @@ const LoginPage = () => {
               id="email"
               className="form_text_input"
               placeholder="이메일 입력..."
-              onChange={(e) => setUser({ ...user, email: e.target.value })}
-              value={user.email}
+              {...register("email")}
+              // onChange={(e) => setUser({ ...user, email: e.target.value })}
+              // value={user.email}
             />
           </div>
           <div>
@@ -38,8 +46,9 @@ const LoginPage = () => {
               id="password"
               className="form_text_input"
               placeholder="패스워드"
-              onChange={(e) => setUser({ ...user, password: e.target.value })}
-              value={user.password}
+              {...register("password")}
+              // onChange={(e) => setUser({ ...user, password: e.target.value })}
+              // value={user.password}
             />
             {/* <button
               type="button"
