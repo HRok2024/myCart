@@ -16,10 +16,14 @@ const LoginPage = () => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm();
 
-  const submitData = (data) => console.log(data);
+  const submitData = (data) => {
+    console.log(data);
+    reset();
+  };
   return (
     <section className="align_center form_page">
       {/* 버튼 태그가 아니라 form에 onSubmit을 해줘야한다 */}
@@ -29,14 +33,23 @@ const LoginPage = () => {
           <div>
             <label htmlFor="email">Email</label>
             <input
-              type="email"
+              type="text"
               id="email"
               className="form_text_input"
               placeholder="이메일 입력..."
-              {...register("email")}
+              {...register("email", {
+                required: "이메일을 입력해주세요",
+                pattern: {
+                  value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                  message: "이메일 형식에 맞게 입력해주세요",
+                },
+              })}
               // onChange={(e) => setUser({ ...user, email: e.target.value })}
               // value={user.email}
             />
+            {errors.email && (
+              <em className="form_error">{errors.email.message}</em>
+            )}
           </div>
           <div>
             <label htmlFor="password">Password</label>
@@ -46,10 +59,16 @@ const LoginPage = () => {
               id="password"
               className="form_text_input"
               placeholder="패스워드"
-              {...register("password")}
+              {...register("password", {
+                required: "비밀번호를 입력해주세요",
+                minLength: { value: 4, message: "비밀번호는 최소 4자리 이상" },
+              })}
               // onChange={(e) => setUser({ ...user, password: e.target.value })}
               // value={user.password}
             />
+            {errors.password && (
+              <em className="form_error">{errors.password.message}</em>
+            )}
             {/* <button
               type="button"
               onClick={() => (passwordRef.current.type = "password")}
