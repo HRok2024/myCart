@@ -5,7 +5,7 @@ import useData from "../Hook/useData";
 import ProductCardSkeleton from "./ProductCardSkeleton";
 
 const ProductsList = () => {
-  const { data, error } = useData("products");
+  const { data, error, isLoading } = useData("products");
   const skeletons = [1, 2, 3, 4, 5, 6, 7, 8];
   return (
     <section className="products_list_section">
@@ -22,9 +22,7 @@ const ProductsList = () => {
 
       <div className="products_list">
         {error && <em className="form_error">{error}</em>}
-        {skeletons.map((n) => (
-          <ProductCardSkeleton key={n} />
-        ))}
+        {isLoading && skeletons.map((n) => <ProductCardSkeleton key={n} />)}
 
         {data.products &&
           data.products.map((p) => (
