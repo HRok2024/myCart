@@ -1,8 +1,10 @@
 import React, { useRef, useState } from "react";
 import "./LoginPage.css";
 import { useForm } from "react-hook-form";
+import { login } from "../../services/userServices";
 
 const LoginPage = () => {
+  const [formError, setFormError] = useState("");
   // const passwordRef = useRef(null);
   // const [user, setUser] = useState({
   //   email: "",
@@ -16,14 +18,18 @@ const LoginPage = () => {
   const {
     register,
     handleSubmit,
-    reset,
     formState: { errors },
   } = useForm();
 
-  const submitData = (data) => {
-    console.log(data);
-    reset();
+  const submitData = async (formData) => {
+    try {
+      await login(formData);
+      window.location = "/"; //로그인 후 홈페이지로 이동
+    } catch (error) {
+      setFormError(error.response.data.message);
+    }
   };
+
   return (
     <section className="align_center form_page">
       {/* 버튼 태그가 아니라 form에 onSubmit을 해줘야한다 */}
@@ -82,7 +88,7 @@ const LoginPage = () => {
               비밀번호 보이게
             </button> */}
           </div>
-
+          {formError && <em className="form_error">{formError}</em>}
           <button type="submit" className="search_button form_submit">
             Submit
           </button>

@@ -11,7 +11,6 @@ const SignupPage = () => {
   const {
     register,
     handleSubmit,
-    reset,
     watch,
     formState: { errors },
   } = useForm();
@@ -19,11 +18,10 @@ const SignupPage = () => {
   const submitData = async (formData) => {
     try {
       await signup(formData, profilePic);
+      window.location = "/"; //가입에 성공하면 토큰은 로컬 스토리지에 저장되고 메인화면으로 이동한다
     } catch (error) {
       setFormError(error.response.data.message);
     }
-
-    reset();
   };
   return (
     <section className="align_center form_page">
