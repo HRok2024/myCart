@@ -3,6 +3,9 @@ import "./App.css";
 import Navbar from "./components/Navbar/Navbar";
 import Routing from "./components/Routing/Routing";
 import { jwtDecode } from "jwt-decode";
+import { addToCartAPI } from "./services/cartServices";
+import setAuthToken from "./utils/setAuthToken";
+import { ToastContainer, toast } from "react-toastify";
 
 //만약 토큰이 있다면 axios 설정에 추가된다
 setAuthToken(localStorage.getItem("token"));
@@ -20,8 +23,13 @@ function App() {
     } else {
       updatedCart[productIndex].quantity += quantity;
     }
-    setCart([updatedCart]);
+    setCart(updatedCart);
+
+    addToCartAPI(product._id, quantity)
+      .then((res) => console.log(res.data))
+      .catch((err) => console.log(err.response));
   };
+
   useEffect(() => {
     try {
       const jwt = localStorage.getItem("token");
