@@ -8,10 +8,9 @@ import Pagenation from "../Common/Pagenation";
 
 const ProductsList = () => {
   const [search, setSearch] = useSearchParams(); //요청주소 뒤의 쿼리스트링
-
+  console.log(search);
   const category = search.get("category"); //'category=값' 이 값을 가져온다
   const page = search.get("page"); //몇번째 페이지
-  console.log(search);
   const { data, error, isLoading } = useData(
     "products",
     {
