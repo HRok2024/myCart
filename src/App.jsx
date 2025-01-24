@@ -3,7 +3,7 @@ import "./App.css";
 import Navbar from "./components/Navbar/Navbar";
 import Routing from "./components/Routing/Routing";
 import { jwtDecode } from "jwt-decode";
-import { addToCartAPI } from "./services/cartServices";
+import { addToCartAPI, getCartAPI } from "./services/cartServices";
 import setAuthToken from "./utils/setAuthToken";
 import { ToastContainer, toast } from "react-toastify";
 
@@ -26,9 +26,20 @@ function App() {
     setCart(updatedCart);
 
     addToCartAPI(product._id, quantity)
-      .then((res) => console.log(res.data))
-      .catch((err) => console.log(err.response));
+      .then((res) => toast.success("상품 추가 성공"))
+      .catch((err) => toast.error("상품 추가 실패"));
   };
+
+  //서버에서 장바구니 정보를 가져온다
+  const getCart = () => {
+    getCartAPI()
+      .then((res) => setCart(res.data))
+      .catch((err) => toast.error("카트 가져오기 실패"));
+  };
+
+  useEffect(() => {
+    if (user) getCart();
+  }, [user]);
 
   useEffect(() => {
     try {
@@ -45,7 +56,8 @@ function App() {
     <div className="app">
       <Navbar user={user} cartCount={cart.length} />
       <main>
-        <Routing addToCart={addToCart} />
+        <ToastContainer position="bottom-right" />
+        <Routing addToCart={addToCart} cart={cart} />
       </main>
     </div>
   );
