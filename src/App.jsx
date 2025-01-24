@@ -3,7 +3,11 @@ import "./App.css";
 import Navbar from "./components/Navbar/Navbar";
 import Routing from "./components/Routing/Routing";
 import { jwtDecode } from "jwt-decode";
-import { addToCartAPI, getCartAPI } from "./services/cartServices";
+import {
+  addToCartAPI,
+  getCartAPI,
+  removeFromCartAPI,
+} from "./services/cartServices";
 import setAuthToken from "./utils/setAuthToken";
 import { ToastContainer, toast } from "react-toastify";
 import UserContext from "./contexts/UserContext";
@@ -35,6 +39,9 @@ function App() {
     const oldCart = [...cart]; //현재 카트 복사
     const newCart = oldCart.filter((item) => item.product._id != id); //id와 같지않는 항목만 남는다
     setCart(newCart);
+    removeFromCartAPI(id).catch((err) =>
+      toast.error("장바구니 상품 삭제 실패")
+    );
   };
   //서버에서 장바구니 정보를 가져온다
   const getCart = () => {
