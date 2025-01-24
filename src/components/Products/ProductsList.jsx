@@ -46,17 +46,7 @@ const ProductsList = () => {
 
         {data.products &&
           !isLoading &&
-          data.products.map((p) => (
-            <ProductCard
-              key={p._id}
-              id={p._id}
-              image={p.images[0]}
-              price={p.price}
-              rating={p.reviews.rate}
-              ratingCounts={p.reviews.counts}
-              stock={p.stock}
-            />
-          ))}
+          data.products.map((p) => <ProductCard key={p._id} product={p} />)}
       </div>
       {/* 페이지네이션 */}
       {data && (

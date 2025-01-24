@@ -6,12 +6,23 @@ import QuantityInput from "../SingleProduct/QuantityInput";
 import Table from "../Common/Table";
 import UserContext from "../../contexts/UserContext";
 import CartContext from "../../contexts/CartContext";
+import { checkoutAPI } from "../../services/orderServices";
 
 const CartPage = () => {
   const [subTotal, setSubTotal] = useState(0);
   const user = useContext(UserContext); //useContext로 UserContext 가져오기
-  const { cart, addToCart, removeFromCart, updateCart } =
+  const { cart, addToCart, removeFromCart, updateCart, setCart } =
     useContext(CartContext);
+  const checkout = () => {
+    const oldCart = [...cart]; //원래 있던 장바구니 복사
+    setCart([]); //빈배열로 카트 비우기
+    checkoutAPI()
+      .then(() => toast.success("주문 성공!"))
+      .catch(() => {
+        toast.error("checkout 중 에러 발생");
+        setCart(oldCart); //이전 장바구니 복구
+      });
+  };
   useEffect(() => {
     let total = 0;
     cart.forEach((item) => {
@@ -78,7 +89,9 @@ const CartPage = () => {
         </tbody>
       </table>
 
-      <button className="search_button checkout_button">결재하기</button>
+      <button onClick={checkout} className="search_button checkout_button">
+        결재하기
+      </button>
     </section>
   );
 };
