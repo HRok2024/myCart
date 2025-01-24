@@ -10,7 +10,8 @@ import CartContext from "../../contexts/CartContext";
 const CartPage = () => {
   const [subTotal, setSubTotal] = useState(0);
   const user = useContext(UserContext); //useContext로 UserContext 가져오기
-  const { cart, addToCart, removeFromCart } = useContext(CartContext);
+  const { cart, addToCart, removeFromCart, updateCart } =
+    useContext(CartContext);
   useEffect(() => {
     let total = 0;
     cart.forEach((item) => {
@@ -39,7 +40,13 @@ const CartPage = () => {
               <td>{product.title}</td>
               <td>{product.price.toLocaleString("ko-KR")} 원</td>
               <td className="align_center table_quantity_input">
-                <QuantityInput quantity={quantity} stock={product.stock} />
+                <QuantityInput
+                  quantity={quantity}
+                  stock={product.stock}
+                  setQuantity={updateCart}
+                  cartPage={true}
+                  productId={product._id}
+                />
               </td>
               <td>{(quantity * product.price).toLocaleString("ko-KR")} 원</td>
               <td>

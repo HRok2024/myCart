@@ -35,6 +35,8 @@ function App() {
       .then((res) => toast.success("상품 추가 성공"))
       .catch((err) => toast.error("상품 추가 실패"));
   };
+
+  //장바구니에서 물건 삭제
   const removeFromCart = (id) => {
     const oldCart = [...cart]; //현재 카트 복사
     const newCart = oldCart.filter((item) => item.product._id != id); //id와 같지않는 항목만 남는다
@@ -43,6 +45,20 @@ function App() {
       toast.error("장바구니 상품 삭제 실패")
     );
   };
+
+  const updateCart = (type, id) => {
+    const updatedCart = [...cart];
+    const i = updatedCart.findIndex((item) => item.product._id === id);
+    if (type === "increase") {
+      updatedCart[i].quantity += 1; //해당 상품의 수량을 1 증가
+      setCart(updatedCart);
+    }
+    if (type === "decrease") {
+      updatedCart[i].quantity -= 1; //해당 상품의 수량을 1 감소
+      setCart(updatedCart);
+    }
+  };
+
   //서버에서 장바구니 정보를 가져온다
   const getCart = () => {
     getCartAPI()
@@ -67,7 +83,9 @@ function App() {
   }, []);
   return (
     <UserContext.Provider value={user}>
-      <CartContext.Provider value={{ cart, addToCart, removeFromCart }}>
+      <CartContext.Provider
+        value={{ cart, addToCart, removeFromCart, updateCart }}
+      >
         <div className="app">
           <Navbar user={user} cartCount={cart.length} />
           <main>
