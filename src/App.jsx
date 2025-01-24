@@ -5,7 +5,9 @@ import Routing from "./components/Routing/Routing";
 import { jwtDecode } from "jwt-decode";
 import {
   addToCartAPI,
+  decreaseProductAPI,
   getCartAPI,
+  increaseProductAPI,
   removeFromCartAPI,
 } from "./services/cartServices";
 import setAuthToken from "./utils/setAuthToken";
@@ -52,10 +54,12 @@ function App() {
     if (type === "increase") {
       updatedCart[i].quantity += 1; //해당 상품의 수량을 1 증가
       setCart(updatedCart);
+      increaseProductAPI(id).catch((err) => toast.err("상품 증가 에러"));
     }
     if (type === "decrease") {
       updatedCart[i].quantity -= 1; //해당 상품의 수량을 1 감소
       setCart(updatedCart);
+      decreaseProductAPI(id).catch((err) => toast.err("상품 감소 에러"));
     }
   };
 
