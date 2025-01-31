@@ -11,15 +11,17 @@ const ProductsList = () => {
   console.log(search);
   const category = search.get("category"); //'category=값' 이 값을 가져온다
   const page = search.get("page"); //몇번째 페이지
+  const searchQuery = search.get("search");
   const { data, error, isLoading } = useData(
     "products",
     {
       params: {
+        search: searchQuery,
         category: category,
         page: page,
       },
     },
-    [category, page]
+    [searchQuery, category, page]
   );
   const skeletons = [1, 2, 3, 4, 5, 6, 7, 8];
   const handlePageChange = (page) => {
